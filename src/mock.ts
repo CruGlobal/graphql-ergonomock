@@ -3,7 +3,6 @@ import {
   parse,
   execute,
   GraphQLType,
-  GraphQLObjectType,
   GraphQLInterfaceType,
   GraphQLUnionType,
   getNamedType,
@@ -190,7 +189,7 @@ function assignResolveType(type: GraphQLType) {
     // the default `resolveType` always returns null. We add a fallback
     // resolution that works with how unions and interface are mocked
     namedFieldType.resolveType = (data: any, context: any, info: GraphQLResolveInfo) => {
-      return info.schema.getType(data.__typename) as GraphQLObjectType;
+      return info.schema.getType(data.__typename)?.name;
     };
   }
 }
