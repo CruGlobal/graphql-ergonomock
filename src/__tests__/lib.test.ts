@@ -3,6 +3,8 @@ import { GraphQLError } from "graphql";
 import schema from "./schema";
 import schemaAST from "./schema-ast.json";
 
+const seed = 'seed';
+
 describe("Automocking", () => {
   describe("Guardrails", () => {
     test("it throws without a valid schema", () => {
@@ -89,10 +91,15 @@ describe("Automocking", () => {
           returnEnum
         }
       `;
-      const resp: any = ergonomock(schema, testQuery);
+      const resp: any = ergonomock(schema, testQuery, { seed });
       expect(resp.data).toMatchObject({
         returnEnum: expect.toBeOneOf(["A", "B", "C"]),
       });
+
+      for (let i = 0; i < 10; ++i) {
+        const resp2 = ergonomock(schema, testQuery, { seed });
+        expect(resp).toEqual(resp2);
+      }
     });
 
     test("can automock unions", () => {
