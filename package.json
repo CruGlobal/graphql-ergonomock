@@ -1,5 +1,5 @@
 {
-  "name": "graphql-ergonomock",
+  "name": "@cruglobal/graphql-ergonomock",
   "version": "0.0.0-development",
   "description": "Automatic mocking of GraphQL operations.",
   "main": "dist/index.js",
