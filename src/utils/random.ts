@@ -252,6 +252,8 @@ const random = {
   // max is exclusive, min is inclusive
   float: (max: number = 100, min: number = 1) => rng() * (max - min) + min,
 
+  item: <T>(array: readonly T[]): T => array[random.integer(array.length, 0)],
+
   // max and min are inclusive
   list: (maxLength: number = 4, minLength: number = 1) => [
     ...Array(random.integer(maxLength + 1, minLength))

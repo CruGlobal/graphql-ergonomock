@@ -33,7 +33,7 @@ export default function forEachFieldInQuery(
         if (isAbstractType(parentType)) {
           const possibleTypes = schema.getPossibleTypes(parentType);
           possibleTypes.forEach(t => {
-            const fieldDef = getFieldDef(schema, t, fieldName);
+            const fieldDef = getFieldDef(schema, t, node);
             if (fieldDef) {
               fn(fieldDef, t.name, fieldName);
             }

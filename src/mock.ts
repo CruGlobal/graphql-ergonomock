@@ -3,7 +3,6 @@ import {
   parse,
   execute,
   GraphQLType,
-  GraphQLObjectType,
   GraphQLInterfaceType,
   GraphQLUnionType,
   getNamedType,
@@ -20,7 +19,6 @@ import {
   buildASTSchema,
 } from "graphql";
 import random from "./utils/random";
-import getRandomElement from "./utils/getRandomElement";
 import forEachFieldInQuery from "./utils/forEachFieldInQuery";
 
 const defaultMockMap: Map<string, GraphQLFieldResolver<any, any>> = new Map();
@@ -118,7 +116,7 @@ export function ergonomock(
       if (fieldType instanceof GraphQLUnionType || fieldType instanceof GraphQLInterfaceType) {
         let implementationType;
         const possibleTypes = schema.getPossibleTypes(fieldType);
-        implementationType = getRandomElement(possibleTypes);
+        implementationType = random.item(possibleTypes);
         return Object.assign(
           { __typename: implementationType },
           mockResolverFunction(implementationType)(root, args, context, info)
@@ -131,7 +129,7 @@ export function ergonomock(
 
       // Default mock for enums
       if (fieldType instanceof GraphQLEnumType) {
-        return getRandomElement(fieldType.getValues()).value;
+        return random.item(fieldType.getValues()).value;
       }
 
       // Automock object types
@@ -190,7 +188,7 @@ function assignResolveType(type: GraphQLType) {
     // the default `resolveType` always returns null. We add a fallback
     // resolution that works with how unions and interface are mocked
     namedFieldType.resolveType = (data: any, context: any, info: GraphQLResolveInfo) => {
-      return info.schema.getType(data.__typename) as GraphQLObjectType;
+      return info.schema.getType(data.__typename)?.name;
     };
   }
 }
