@@ -3,7 +3,7 @@ import { GraphQLError } from "graphql";
 import schema from "./schema";
 import schemaAST from "./schema-ast.json";
 
-const seed = 'seed';
+const seed = "seed";
 
 describe("Automocking", () => {
   describe("Guardrails", () => {
