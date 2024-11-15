@@ -3,7 +3,7 @@ import { GraphQLError } from "graphql";
 import schema from "./schema";
 import schemaAST from "./schema-ast.json";
 
-const seed = 'seed';
+const seed = "seed";
 
 describe("Automocking", () => {
   describe("Guardrails", () => {
@@ -1131,6 +1131,25 @@ describe("Automocking", () => {
         returnString: expect.toBeString(),
       });
       expect(resp.errors).toStrictEqual([new GraphQLError("foo shape")]);
+    });
+  });
+
+  describe("mocking aliases", () => {
+    test("can handle aliases", () => {
+      const testQuery = /* GraphQL */ `
+        {
+          int1: returnInt
+          int2: returnInt
+          int3: returnInt
+        }
+      `;
+      const mocks = {
+        int1: 1,
+        int2: 2,
+        int3: 3,
+      };
+      const resp: any = ergonomock(schema, testQuery, { mocks });
+      expect(resp.data).toEqual(mocks);
     });
   });
 

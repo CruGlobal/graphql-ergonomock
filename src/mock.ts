@@ -94,15 +94,18 @@ export function ergonomock(
     // 2. if the nullableType is a list, recurse
     // 3. if there's no mock defined, use the default mocks for this type
     return (root, args, context, info) => {
+      const fieldNameWithAlias =
+        info.fieldNodes.find((node) => node.kind === "Field")?.alias?.value ?? fieldName;
+
       // nullability doesn't matter for the purpose of mocking.
       const fieldType = getNullableType(type) as GraphQLNullableType;
 
-      if (root && fieldName && typeof root[fieldName] !== "undefined") {
-        const mock = root[fieldName];
+      if (root && fieldNameWithAlias && typeof root[fieldNameWithAlias] !== "undefined") {
+        const mock = root[fieldNameWithAlias];
         if (typeof mock === "function") {
           return mock(root, args, context, info);
         }
-        return root[fieldName];
+        return mock;
       }
 
       // Lists
