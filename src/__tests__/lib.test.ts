@@ -1134,6 +1134,25 @@ describe("Automocking", () => {
     });
   });
 
+  describe("mocking aliases", () => {
+    test("can handle aliases", () => {
+      const testQuery = /* GraphQL */ `
+        {
+          int1: returnInt
+          int2: returnInt
+          int3: returnInt
+        }
+      `;
+      const mocks = {
+        int1: 1,
+        int2: 2,
+        int3: 3,
+      };
+      const resp: any = ergonomock(schema, testQuery, { mocks });
+      expect(resp.data).toEqual(mocks);
+    });
+  });
+
   describe("default mock resolvers", () => {
     test("can mock partiallly resolved objects", () => {
       const testQuery = /* GraphQL */ `
